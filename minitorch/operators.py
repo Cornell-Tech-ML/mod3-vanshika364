@@ -156,7 +156,7 @@ def is_close(a: float, b: float) -> bool:
         bool: True if the numbers are within 1e-2, False otherwise.
 
     """
-    return abs(a - b) < 1e-2
+    return (a - b < 1e-2) and (b - a < 1e-2)
 
 
 def sigmoid(x: float) -> float:

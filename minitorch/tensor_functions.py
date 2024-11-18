@@ -127,7 +127,10 @@ class Mul(Function):
         """Gradient of multiplication"""
         # TODO: Implement for Task 2.4.
         (a, b) = ctx.saved_values
-        return b * grad_output, a * grad_output
+        return (
+            grad_output.f.mul_zip(b,grad_output),
+            grad_output.f.mul_zip(a,grad_output),
+        )
 
 
 class Sigmoid(Function):
@@ -143,11 +146,8 @@ class Sigmoid(Function):
     def backward(ctx: Context, grad_output: Tensor) -> Tensor:
         """Gradient of sigmoid"""
         # TODO: Implement for Task 2.4.
-        (sigmoid_tensor,) = ctx.saved_values
-        return grad_output.f.mul_zip(
-            grad_output,
-            sigmoid_tensor.f.mul_zip(sigmoid_tensor, (-sigmoid_tensor + tensor([1.0]))),
-        )
+        sigma: Tensor = ctx.saved_values[0]
+        return sigma * (-sigma + 1.0) * grad_output
 
 
 class ReLU(Function):
@@ -257,22 +257,21 @@ class Permute(Function):
     def forward(ctx: Context, a: Tensor, order: Tensor) -> Tensor:
         """Permute the dimensions"""
         # TODO: Implement for Task 2.3.
-        re_order = [0] * len(list(order.to_numpy()))
-        order_int = []
-        for idx, val in enumerate(list(order.to_numpy())):
-            re_order[int(val)] = idx  # To undo the new permutation in backward
-            order_int.append(int(val))
-        ctx.save_for_backward(re_order)
-        # Calls permute from TensorData
-        return a._new(a._tensor.permute(*order_int))
+        ctx.save_for_backward(order)
+        return a._new(a._tensor.permute(*[int(order[i]) for i in range(order.size)]))
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, float]:
         """Permute gradients the dimensions"""
         # TODO: Implement for Task 2.4.
-        (re_order,) = ctx.saved_values
-        return grad_output._new(grad_output._tensor.permute(*re_order)), 0.0
-
+        order: Tensor = ctx.saved_tensors[0]
+        order2: List[int] = [
+            a[0]
+            for a in sorted(
+                enumerate([order[i] for i in range(order.size)]), key = lambda a:a[1]
+            )
+        ]
+        return grad_output._new(grad_output._tensor.permute(*order2)),0.0
 
 class View(Function):
     @staticmethod

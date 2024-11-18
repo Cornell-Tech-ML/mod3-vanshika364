@@ -26,13 +26,14 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
 
     """
     # TODO: Implement for Task 1.1.
-    vals1 = list(vals)
-    vals2 = list(vals)
+    vals1 = [v for v in vals]
+    vals2 = [v for v in vals]
 
     vals1[arg] += epsilon
     vals2[arg] -= epsilon
+    delta = f(*vals1) - f(*vals2)
 
-    return (f(*vals1) - f(*vals2)) / (2 * epsilon)
+    return delta / (2 * epsilon)
     # raise NotImplementedError("Need to implement for Task 1.1")
 
 
@@ -110,18 +111,19 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
     None: Updates the derivative values of each leaf through accumulate_derivative`.
 
     """
-    ordered_vars = topological_sort(variable)
-    derivatives = {variable.unique_id: deriv}
-
-    for var in ordered_vars:
+    queue = topological_sort(variable)
+    derivatives = {}
+    derivatives[variable.unique_id] = deriv
+    for var in queue:
+        deriv = derivatives[var.unique_id]
         if var.is_leaf():
-            var.accumulate_derivative(derivatives[var.unique_id])
+            var.accumulate_derivative(deriv)
         else:
-            for parent, local_deriv in var.chain_rule(derivatives[var.unique_id]):
-                if parent.unique_id not in derivatives:
-                    derivatives[parent.unique_id] = local_deriv
-                else:
-                    derivatives[parent.unique_id] += local_deriv
+            for v,d in var.chain_rule(deriv):
+                if v.is_constant():
+                    continue
+                derivatives.setdefault(v.unique_id, 0.0)
+                derivatives[v.unique_id] = derivatives[v.unique_id] + d
 
     # raise NotImplementedError("Need to implement for Task 1.4")
 

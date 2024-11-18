@@ -179,7 +179,8 @@ class Mul(ScalarFunction):
 
         """
         ctx.save_for_backward(a, b)
-        return operators.mul(a, b)
+        c = a * b
+        return c
 
     @staticmethod
     def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
@@ -269,7 +270,7 @@ class Neg(ScalarFunction):
         return float(operators.neg(a))
 
     @staticmethod
-    def backward(ctx: Context, d_output: float) -> Tuple[float]:
+    def backward(ctx: Context, d_output: float) -> float:
         """Backward method for the negation operation.
 
         Parameters
@@ -285,7 +286,7 @@ class Neg(ScalarFunction):
             The negation of `d_output`.
 
         """
-        return (operators.neg(d_output),)
+        return -d_output
 
 
 class ReLU(ScalarFunction):
@@ -309,10 +310,10 @@ class ReLU(ScalarFunction):
 
         """
         ctx.save_for_backward(a)
-        return operators.relu(a)
+        return float(operators.relu(a))
 
     @staticmethod
-    def backward(ctx: Context, d_output: float) -> Tuple[float]:
+    def backward(ctx: Context, d_output: float) -> float:
         """Backward method for the ReLU function.
 
         Parameters
@@ -329,7 +330,7 @@ class ReLU(ScalarFunction):
 
         """
         (a,) = ctx.saved_values
-        return (operators.relu_back(a, d_output),)
+        return operators.relu_back(a, d_output)
 
 
 class Exp(ScalarFunction):
@@ -373,7 +374,7 @@ class Exp(ScalarFunction):
 
         """
         (a,) = ctx.saved_values
-        return float(d_output * operators.exp(a))
+        return d_output * operators.exp(a)
 
 
 class Sigmoid(ScalarFunction):
@@ -398,10 +399,10 @@ class Sigmoid(ScalarFunction):
         """
         sig = operators.sigmoid(a)
         ctx.save_for_backward(sig)
-        return sig
+        return float(sig)
 
     @staticmethod
-    def backward(ctx: Context, d_output: float) -> Tuple[float]:
+    def backward(ctx: Context, d_output: float) -> float:
         """Backward method for the sigmoid function.
 
         Parameters
@@ -418,7 +419,7 @@ class Sigmoid(ScalarFunction):
 
         """
         (sig,) = ctx.saved_values
-        return (d_output * sig * (1 - sig),)
+        return d_output * sig * (1 - sig)
 
 
 class LT(ScalarFunction):
@@ -447,7 +448,7 @@ class LT(ScalarFunction):
         return float(operators.lt(a, b))
 
     @staticmethod
-    def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
+    def backward(ctx: Context, d_output: float) -> Tuple[float, ...]:
         """Backward method for the less-than operation.
 
         Parameters
@@ -491,7 +492,7 @@ class EQ(ScalarFunction):
         return float(operators.eq(a, b))
 
     @staticmethod
-    def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
+    def backward(ctx: Context, d_output: float) -> Tuple[float, ...]:
         """Backward method for the equals operation.
 
         Parameters
