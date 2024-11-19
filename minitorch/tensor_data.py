@@ -98,7 +98,7 @@ def broadcast_index(
     # TODO: Implement for Task 2.2.
     for i, s in enumerate(shape):
         if s > 1:
-            out_index[i]: big_index[i + (len(big_shape) - len(shape))] # type: ignore
+            out_index[i] = big_index[i + (len(big_shape) - len(shape))]  # type: ignore
         else:
             out_index[i] = 0
     return None
@@ -133,23 +133,23 @@ def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
     #     broadcasted_shape.append(max(shape1[i], shape2[i]))
 
     # return tuple(broadcasted_shape)
-    a,b = shape1, shape2
+    a, b = shape1, shape2
     m = max(len(a), len(b))
     c_rev = [0] * m
     a_rev = list(reversed(a))
-    b_rev =  list(reversed(b))
+    b_rev = list(reversed(b))
     for i in range(m):
-        if i >=len(a):
+        if i >= len(a):
             c_rev[i] = b_rev[i]
         elif i >= len(b):
-            c_rev[i] =  a_rev[i]
+            c_rev[i] = a_rev[i]
         else:
             c_rev[i] = max(a_rev[i], b_rev[i])
             if a_rev[i] != c_rev[i] and a_rev[i] != 1:
                 raise IndentationError(f"Broadcast Failure {a} {b}")
-            if b_rev[i] != c_rev[i] and b_rev[i] !=1:
+            if b_rev[i] != c_rev[i] and b_rev[i] != 1:
                 raise IndentationError(f"Broadcast Failure {a} {b}")
-            
+
     return tuple(reversed(c_rev))
 
 

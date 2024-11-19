@@ -143,7 +143,7 @@ def max(x: float, y: float) -> float:
     return x if x > y else y
 
 
-def is_close(a: float, b: float) -> bool:
+def is_close(a: float, b: float) -> float:
     """Check if two numbers are close.
 
     Args:

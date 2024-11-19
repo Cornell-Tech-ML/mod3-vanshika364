@@ -276,7 +276,7 @@ def tensor_map(
         in_strides: Strides,
     ) -> None:
         # TODO: Implement for Task 2.3.
-        out_index:  Index = np.zeros(MAX_DIMS, np.int16)
+        out_index: Index = np.zeros(MAX_DIMS, np.int16)
         in_index: Index = np.zeros(MAX_DIMS, np.int16)
         for i in range(len(out)):
             to_index(i, out_shape, out_index)
@@ -284,6 +284,7 @@ def tensor_map(
             o = index_to_position(out_index, out_strides)
             j = index_to_position(in_index, in_strides)
             out[o] = fn(in_storage[j])
+
     return _map
 
 
@@ -331,7 +332,7 @@ def tensor_zip(
         # TODO: Implement for Task 2.3.
         a_index: Index = np.zeros(MAX_DIMS, np.int16)
         b_index: Index = np.zeros(MAX_DIMS, np.int16)
-        out_index:  Index = np.zeros(MAX_DIMS, np.int16)
+        out_index: Index = np.zeros(MAX_DIMS, np.int16)
 
         for i in range(len(out)):
             to_index(i, out_shape, out_index)
@@ -373,7 +374,7 @@ def tensor_reduce(
         reduce_dim: int,
     ) -> None:
         # TODO: Implement for Task 2.3.
-        out_index:  Index = np.zeros(MAX_DIMS, np.int16)
+        out_index: Index = np.zeros(MAX_DIMS, np.int16)
         reduce_size = a_shape[reduce_dim]
         for i in range(len(out)):
             to_index(i, out_shape, out_index)
@@ -382,6 +383,7 @@ def tensor_reduce(
                 out_index[reduce_dim] = s
                 j = index_to_position(out_index, a_strides)
                 out[o] = fn(out[o], a_storage[j])
+
     return _reduce
 
 

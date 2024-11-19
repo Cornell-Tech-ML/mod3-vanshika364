@@ -119,7 +119,7 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
         if var.is_leaf():
             var.accumulate_derivative(deriv)
         else:
-            for v,d in var.chain_rule(deriv):
+            for v, d in var.chain_rule(deriv):
                 if v.is_constant():
                     continue
                 derivatives.setdefault(v.unique_id, 0.0)
