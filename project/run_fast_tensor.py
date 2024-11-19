@@ -33,7 +33,7 @@ class Network(minitorch.Module):
         # raise NotImplementedError("Need to implement for Task 3.5")
         x = self.layer1.forward(x).relu()
         x = self.layer2.forward(x).relu()
-        x = self.layer3.forward(x).sigmoid()  
+        x = self.layer3.forward(x).sigmoid()
         return x
 
 class Linear(minitorch.Module):

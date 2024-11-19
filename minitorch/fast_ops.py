@@ -7,7 +7,6 @@ from numba import prange
 from numba import njit as _njit
 
 from .tensor_data import (
-    # MAX_DIMS,
     broadcast_index,
     index_to_position,
     shape_broadcast,
@@ -170,10 +169,10 @@ def tensor_map(
     ) -> None:
         # TODO: Implement for Task 3.1.
         # raise NotImplementedError("Need to implement for Task 3.1")
-        for i in prange(np.prod(out_shape)):
-            out_index = np.zeros_like(out_shape, dtype=np.int32)
+        for i in prange(len(out)):
+            out_index = np.zeros(len(out_shape), dtype=np.int32)
             to_index(i, out_shape, out_index)
-            in_index = np.zeros_like(in_shape, dtype=np.int32)
+            in_index = np.zeros(len(in_shape), dtype=np.int32)
             broadcast_index(out_index, out_shape, in_shape, in_index)
 
             out_pos = index_to_position(out_index, out_strides)
@@ -219,11 +218,11 @@ def tensor_zip(
     ) -> None:
         # TODO: Implement for Task 3.1.
         # raise NotImplementedError("Need to implement for Task 3.1")
-        for i in prange(np.prod(out_shape)):
-            out_index = np.zeros_like(out_shape, dtype=np.int64)
+        for i in prange(len(out)):
+            out_index = np.zeros(len(out_shape), dtype=np.int32)
             to_index(i, out_shape, out_index)
-            a_index = np.zeros_like(a_shape, dtype=np.int64)
-            b_index = np.zeros_like(b_shape, dtype=np.int64)
+            a_index = np.zeros(len(a_shape), dtype=np.int32)
+            b_index = np.zeros(len(b_shape), dtype=np.int32)
             broadcast_index(out_index, out_shape, a_shape, a_index)
             broadcast_index(out_index, out_shape, b_shape, b_index)
 
@@ -268,21 +267,17 @@ def tensor_reduce(
         # TODO: Implement for Task 3.1.
         # raise NotImplementedError("Need to implement for Task 3.1")
 
-        for i in prange(np.prod(out_shape)):
-            out_index = np.zeros_like(out_shape, dtype=np.int32)
+        reduce_size = a_shape[reduce_dim]
+        for i in prange(len(out)):
+            out_index = np.zeros(len(out_shape), dtype=np.int32)
             to_index(i, out_shape, out_index)
-            in_index = np.zeros_like(a_shape, dtype=np.int32)
-            broadcast_index(out_index, out_shape, a_shape, in_index)
-
-            reduced_value = a_storage[index_to_position(in_index, a_strides)]
-            for j in range(1, a_shape[reduce_dim]):
-                in_index[reduce_dim] = j
-                reduced_value = fn(
-                    reduced_value, a_storage[index_to_position(in_index, a_strides)]
-                )
-
-            out_pos = index_to_position(out_index, out_strides)
-            out[out_pos] = reduced_value
+            o = index_to_position(out_index, out_strides)
+            acc = out[o]  # Use accumulator variable
+            for s in range(reduce_size):
+                out_index[reduce_dim] = s
+                j = index_to_position(out_index, a_strides)
+                acc = fn(acc, a_storage[j])
+            out[o] = acc
 
     return njit(_reduce, parallel=True)
 
@@ -338,40 +333,23 @@ def _tensor_matrix_multiply(
     batch_size, out_rows, out_cols = out_shape
     a_rows, a_cols = a_shape[-2], a_shape[-1]
     b_rows, b_cols = b_shape[-2], b_shape[-1]
-
-    # Ensure that matrix multiplication conditions are met
     assert a_cols == b_rows, "Matrix multiplication dimension mismatch."
-
-    # Iterate over the batch dimension in parallel
     for batch in prange(batch_size):
-        # Compute the batch start index for a and b
         a_batch_start = batch * a_strides[0] if a_shape[0] > 1 else 0
         b_batch_start = batch * b_strides[0] if b_shape[0] > 1 else 0
-
-        # Iterate over each row of the output tensor
         for i in range(out_rows):
-            # Calculate the row start index for tensor `a`
             a_row_start = a_batch_start + i * a_strides[-2]
-
-            # Iterate over each column of the output tensor
             for j in range(out_cols):
-                # Calculate the column start index for tensor `b`
                 b_col_start = b_batch_start + j * b_strides[-1]
-
-                # Initialize the result for the current element
                 result = 0.0
-
-                # Perform the dot product
                 for k in range(a_cols):
-                    # Calculate indices for elements in `a` and `b`
                     a_index = a_row_start + k * a_strides[-1]
                     b_index = b_col_start + k * b_strides[-2]
                     result += a_storage[a_index] * b_storage[b_index]
-
-                # Calculate the index in the output storage and assign the result
-                out_index = batch * out_strides[0] + i * out_strides[-2] + j * out_strides[-1]
+                out_index = (
+                    batch * out_strides[0] + i * out_strides[-2] + j * out_strides[-1]
+                )
                 out[out_index] = result
-
 
 
 tensor_matrix_multiply = njit(_tensor_matrix_multiply, parallel=True)

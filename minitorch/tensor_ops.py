@@ -7,8 +7,6 @@ from typing_extensions import Protocol
 
 from . import operators
 from .tensor_data import (
-    MAX_DIMS,
-    Index,
     broadcast_index,
     index_to_position,
     shape_broadcast,
@@ -276,8 +274,8 @@ def tensor_map(
         in_strides: Strides,
     ) -> None:
         # TODO: Implement for Task 2.3.
-        out_index: Index = np.zeros(MAX_DIMS, np.int16)
-        in_index: Index = np.zeros(MAX_DIMS, np.int16)
+        out_index = np.zeros(len(out_shape), dtype=np.int32)
+        in_index = np.zeros(len(in_shape), dtype=np.int32)
         for i in range(len(out)):
             to_index(i, out_shape, out_index)
             broadcast_index(out_index, out_shape, in_shape, in_index)
@@ -330,9 +328,9 @@ def tensor_zip(
         b_strides: Strides,
     ) -> None:
         # TODO: Implement for Task 2.3.
-        a_index: Index = np.zeros(MAX_DIMS, np.int16)
-        b_index: Index = np.zeros(MAX_DIMS, np.int16)
-        out_index: Index = np.zeros(MAX_DIMS, np.int16)
+        a_index = np.zeros(len(a_shape), dtype=np.int32)
+        b_index = np.zeros(len(b_shape), dtype=np.int32)
+        out_index = np.zeros(len(out_shape), dtype=np.int32)
 
         for i in range(len(out)):
             to_index(i, out_shape, out_index)
@@ -374,7 +372,7 @@ def tensor_reduce(
         reduce_dim: int,
     ) -> None:
         # TODO: Implement for Task 2.3.
-        out_index: Index = np.zeros(MAX_DIMS, np.int16)
+        out_index = np.zeros(len(out_shape), dtype=np.int32)
         reduce_size = a_shape[reduce_dim]
         for i in range(len(out)):
             to_index(i, out_shape, out_index)
