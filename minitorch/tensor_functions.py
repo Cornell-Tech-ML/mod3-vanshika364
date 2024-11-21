@@ -208,7 +208,7 @@ class Sum(Function):
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, float]:
         """Gradient of addition"""
-        a_shape, dim = ctx.saved_values
+        _, _ = ctx.saved_values
         return grad_output, 0.0
 
 
@@ -262,7 +262,7 @@ class Permute(Function):
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, float]:
         """Permute gradients the dimensions"""
         # TODO: Implement for Task 2.4.
-        order: Tensor = ctx.saved_tensors[0]
+        order: Tensor = ctx.saved_values[0]
         order2: List[int] = [
             a[0]
             for a in sorted(
