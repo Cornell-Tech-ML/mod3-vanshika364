@@ -323,6 +323,7 @@ def tensor_reduce(
     ) -> None:
         BLOCK_DIM = 1024
         cache = cuda.shared.array(BLOCK_DIM, numba.float64)
+        a_index = cuda.local.array(MAX_DIMS, numba.int32)
         out_index = cuda.local.array(MAX_DIMS, numba.int32)
         out_pos = cuda.blockIdx.x
         pos = cuda.threadIdx.x
@@ -497,29 +498,59 @@ def _tensor_matrix_multiply(
     # TODO: Implement for Task 3.4.
     # raise NotImplementedError("Need to implement for Task 3.4")
 
-    cache_value = 0.0
-    # Loop over blocks of matrix A and B
-    for k_block in range(0, a_shape[-1], BLOCK_DIM):
-        # Load data into shared memory for matrix A
-        if i < a_shape[0] and k_block + pi < a_shape[-1]:
-            a_shared[pi, pj] = a_storage[
-                i * a_strides[0] + (k_block + pj) * a_strides[1]
-            ]
+    # Boundary check for thread
+    if i >= out_shape[-2] or j >= out_shape[-1]:
+        return
+
+    # Code for matrix multiplication
+    acc = 0.0
+
+    # Loop over the sub-matrices
+    for k_block in range((a_shape[-1] + BLOCK_DIM - 1) // BLOCK_DIM):
+        # Load data into shared memory
+        k = k_block * BLOCK_DIM + pj
+
+        # Load matrix a
+        if i < a_shape[-2] and k < a_shape[-1]:
+            a_idx = (
+                batch * a_batch_stride  # batch dimension
+                + i * a_strides[-2]  # row dimension
+                + k * a_strides[-1]  # column dimension
+            )
+            a_shared[pi, pj] = a_storage[a_idx]
         else:
             a_shared[pi, pj] = 0.0
-        if j < b_shape[1] and k_block + pj < b_shape[-2]:
-            b_shared[pi, pj] = b_storage[
-                (k_block + pi) * b_strides[0] + j * b_strides[1]
-            ]
+
+        # Load matrix b
+        k = k_block * BLOCK_DIM + pi
+        if k < b_shape[-2] and j < b_shape[-1]:
+            b_idx = (
+                batch * b_batch_stride  # batch dimension
+                + k * b_strides[-2]  # row dimension
+                + j * b_strides[-1]  # column dimension
+            )
+            b_shared[pi, pj] = b_storage[b_idx]
         else:
             b_shared[pi, pj] = 0.0
+
+        # Synchronize threads
         cuda.syncthreads()
+
+        # Compute partial dot product
         for k in range(BLOCK_DIM):
-            if i < out_shape[0] and j < out_shape[1]:
-                cache_value += a_shared[pi, k] * b_shared[k, pj]
+            if k_block * BLOCK_DIM + k < a_shape[-1]:  # Check tile boundary
+                acc += a_shared[pi, k] * b_shared[k, pj]
+
+        # Synchronize before loading next sub-matrix
         cuda.syncthreads()
-    if i < out_shape[0] and j < out_shape[1]:
-        out[i * out_strides[0] + j * out_strides[1]] = cache_value
+
+    # Write the result
+    out_idx = (
+        batch * out_strides[0]  # batch dimension
+        + i * out_strides[-2]  # row dimension
+        + j * out_strides[-1]  # column dimension
+    )
+    out[out_idx] = acc
 
 
 tensor_matrix_multiply = jit(_tensor_matrix_multiply)

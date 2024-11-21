@@ -143,7 +143,7 @@ def max(x: float, y: float) -> float:
     return x if x > y else y
 
 
-def is_close(a: float, b: float) -> float:
+def is_close(a: float, b: float) -> bool:
     """Check if two numbers are close.
 
     Args:
@@ -156,7 +156,7 @@ def is_close(a: float, b: float) -> float:
         bool: True if the numbers are within 1e-2, False otherwise.
 
     """
-    return (a - b < 1e-2) and (b - a < 1e-2)
+    return abs(a - b) < 1e-2
 
 
 def sigmoid(x: float) -> float:

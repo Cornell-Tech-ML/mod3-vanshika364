@@ -444,6 +444,7 @@ class Tensor:
 
     def sum(self, dim: Optional[int] = None) -> Tensor:
         """Compute the sum over dimension `dim`"""
+        self.zero_grad_()
         if dim is None:
             return Sum.apply(self.contiguous().view(self.size), self._ensure_tensor(0))
         else:
@@ -451,6 +452,7 @@ class Tensor:
 
     def mean(self, dim: Optional[int] = None) -> Tensor:
         """Compute the mean over dimension `dim`"""
+        self.zero_grad_()
         if dim is not None:
             return self.sum(dim) / self.shape[dim]
         else:
@@ -458,10 +460,12 @@ class Tensor:
 
     def permute(self, *order: int) -> Tensor:
         """Permute tensor dimensions to *order"""
+        self.zero_grad_()
         return Permute.apply(self, tensor(list(order)))
 
     def view(self, *shape: int) -> Tensor:
         """Change the shape of the tensor to a new shape with the same size"""
+        self.zero_grad_()
         return View.apply(self, tensor(list(shape)))
 
     def zero_grad_(self) -> None:
