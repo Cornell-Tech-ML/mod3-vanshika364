@@ -260,6 +260,7 @@ def _sum_practice(out: Storage, a: Storage, size: int) -> None:
         out (Storage): storage for `out` tensor.
         a (Storage): storage for `a` tensor.
                 size (int):  length of a.
+        size  : size in int
 
     """  # noqa: D404
     BLOCK_DIM = 32

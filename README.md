@@ -573,7 +573,6 @@ Average epoch time: 1.2126s
 
 
 # Large Model - Simple Dataset with 500 Hidden Layers
-# CPU
 ```console
 Epoch 0 | Loss: 5.4545 | Correct: 27 | Time: 4.73 sec
 Epoch 10 | Loss: 3.1678 | Correct: 41 | Time: 3.03 sec
