@@ -386,8 +386,8 @@ def _tensor_matrix_multiply(
     # TODO: Implement for Task 3.2.
     # raise NotImplementedError("Need to implement for Task 3.2")
     batch_size, out_rows, out_cols = out_shape
-    a_rows, a_cols = a_shape[-2], a_shape[-1]
-    b_rows, b_cols = b_shape[-2], b_shape[-1]
+    a_cols = a_shape[-1]
+    b_rows = b_shape[-2]
     assert a_cols == b_rows, "Matrix multiplication dimension mismatch."
     for batch in prange(batch_size):
         a_batch_start = batch * a_strides[0] if a_shape[0] > 1 else 0
