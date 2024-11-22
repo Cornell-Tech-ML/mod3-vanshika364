@@ -395,16 +395,119 @@ None
 <img src="images/simple cpu.png" width="50%">
 
 # GPU Output:
-<img src="images/simple cpu.png" width="50%">
+```console
+Epoch 0 | Loss: 5.5860 | Correct: 46 | Time: 4.06 sec
+Epoch 10 | Loss: 3.5058 | Correct: 42 | Time: 2.49 sec
+Epoch 20 | Loss: 1.2429 | Correct: 46 | Time: 1.89 sec
+Epoch 30 | Loss: 0.3169 | Correct: 45 | Time: 1.87 sec
+Epoch 40 | Loss: 1.1785 | Correct: 50 | Time: 2.26 sec
+Epoch 50 | Loss: 1.3917 | Correct: 50 | Time: 1.89 sec
+Epoch 60 | Loss: 0.5542 | Correct: 50 | Time: 1.86 sec
+Epoch 70 | Loss: 1.2911 | Correct: 47 | Time: 1.95 sec
+Epoch 80 | Loss: 0.3420 | Correct: 50 | Time: 1.90 sec
+Epoch 90 | Loss: 0.4726 | Correct: 50 | Time: 1.88 sec
+Epoch 100 | Loss: 0.8205 | Correct: 50 | Time: 1.86 sec
+Epoch 110 | Loss: 0.6698 | Correct: 50 | Time: 2.68 sec
+Epoch 120 | Loss: 0.1024 | Correct: 50 | Time: 1.91 sec
+Epoch 130 | Loss: 0.9405 | Correct: 50 | Time: 1.87 sec
+Epoch 140 | Loss: 0.9249 | Correct: 50 | Time: 2.37 sec
+Epoch 150 | Loss: 0.9851 | Correct: 50 | Time: 1.89 sec
+Epoch 160 | Loss: 0.2260 | Correct: 50 | Time: 1.93 sec
+Epoch 170 | Loss: 0.3606 | Correct: 50 | Time: 2.52 sec
+Epoch 180 | Loss: 0.5600 | Correct: 50 | Time: 1.86 sec
+Epoch 190 | Loss: 0.8429 | Correct: 50 | Time: 1.87 sec
+Epoch 200 | Loss: 0.9978 | Correct: 50 | Time: 2.72 sec
+Epoch 210 | Loss: 1.1609 | Correct: 49 | Time: 1.86 sec
+Epoch 220 | Loss: 0.2671 | Correct: 50 | Time: 1.90 sec
+Epoch 230 | Loss: 0.5918 | Correct: 50 | Time: 2.89 sec
+Epoch 240 | Loss: 0.4944 | Correct: 50 | Time: 1.94 sec
+Epoch 250 | Loss: 0.3836 | Correct: 50 | Time: 1.91 sec
+Epoch 260 | Loss: 0.1303 | Correct: 50 | Time: 2.49 sec
+Epoch 270 | Loss: 0.1470 | Correct: 50 | Time: 1.87 sec
+Epoch 280 | Loss: 0.2369 | Correct: 50 | Time: 1.94 sec
+Epoch 290 | Loss: 0.4412 | Correct: 50 | Time: 2.40 sec
+Epoch 300 | Loss: 0.4826 | Correct: 50 | Time: 1.87 sec
+Epoch 310 | Loss: 0.1910 | Correct: 50 | Time: 1.89 sec
+Epoch 320 | Loss: 0.2704 | Correct: 50 | Time: 2.21 sec
+Epoch 330 | Loss: 0.0755 | Correct: 50 | Time: 1.92 sec
+Epoch 340 | Loss: 0.0916 | Correct: 50 | Time: 1.89 sec
+Epoch 350 | Loss: 0.3227 | Correct: 50 | Time: 2.05 sec
+Epoch 360 | Loss: 0.2596 | Correct: 50 | Time: 1.88 sec
+Epoch 370 | Loss: 0.1371 | Correct: 50 | Time: 1.93 sec
+Epoch 380 | Loss: 0.2715 | Correct: 50 | Time: 1.96 sec
+Epoch 390 | Loss: 0.0156 | Correct: 50 | Time: 1.88 sec
+Epoch 400 | Loss: 0.2836 | Correct: 50 | Time: 1.87 sec
+Epoch 410 | Loss: 0.1015 | Correct: 50 | Time: 1.95 sec
+Epoch 420 | Loss: 0.3180 | Correct: 50 | Time: 2.06 sec
+Epoch 430 | Loss: 0.2550 | Correct: 50 | Time: 1.87 sec
+Epoch 440 | Loss: 0.2589 | Correct: 50 | Time: 1.88 sec
+Epoch 450 | Loss: 0.0061 | Correct: 50 | Time: 2.22 sec
+Epoch 460 | Loss: 0.0392 | Correct: 50 | Time: 1.92 sec
+Epoch 470 | Loss: -0.0000 | Correct: 50 | Time: 1.88 sec
+Epoch 480 | Loss: 0.1088 | Correct: 50 | Time: 2.52 sec
+Epoch 490 | Loss: 0.0685 | Correct: 50 | Time: 1.86 sec
+Average epoch time: 1.2093s
+```
 
 # 2. Split Dataset
 
 # CPU Output:
 <img src="images/split cpu.png" width="50%">
-# 1. Simple Dataset
 
 # GPU Output:
-<img src="images/simple cpu.png" width="50%">
+``` console
+Epoch 0 | Loss: 8.0220 | Correct: 30 | Time: 4.02 sec
+Epoch 10 | Loss: 6.0884 | Correct: 38 | Time: 1.86 sec
+Epoch 20 | Loss: 4.7930 | Correct: 44 | Time: 2.71 sec
+Epoch 30 | Loss: 4.2489 | Correct: 44 | Time: 1.86 sec
+Epoch 40 | Loss: 2.8546 | Correct: 45 | Time: 1.92 sec
+Epoch 50 | Loss: 2.2118 | Correct: 46 | Time: 2.33 sec
+Epoch 60 | Loss: 2.1866 | Correct: 48 | Time: 1.86 sec
+Epoch 70 | Loss: 2.0989 | Correct: 47 | Time: 1.85 sec
+Epoch 80 | Loss: 1.7148 | Correct: 48 | Time: 2.21 sec
+Epoch 90 | Loss: 1.7068 | Correct: 47 | Time: 1.87 sec
+Epoch 100 | Loss: 1.6560 | Correct: 50 | Time: 1.87 sec
+Epoch 110 | Loss: 1.8391 | Correct: 50 | Time: 1.86 sec
+Epoch 120 | Loss: 2.1931 | Correct: 49 | Time: 1.96 sec
+Epoch 130 | Loss: 1.2652 | Correct: 49 | Time: 1.89 sec
+Epoch 140 | Loss: 1.1093 | Correct: 50 | Time: 1.87 sec
+Epoch 150 | Loss: 1.3989 | Correct: 50 | Time: 1.87 sec
+Epoch 160 | Loss: 0.8475 | Correct: 50 | Time: 1.93 sec
+Epoch 170 | Loss: 0.6952 | Correct: 50 | Time: 1.87 sec
+Epoch 180 | Loss: 0.3561 | Correct: 50 | Time: 2.10 sec
+Epoch 190 | Loss: 0.8465 | Correct: 50 | Time: 1.87 sec
+Epoch 200 | Loss: 0.7683 | Correct: 50 | Time: 1.93 sec
+Epoch 210 | Loss: 0.8127 | Correct: 50 | Time: 2.11 sec
+Epoch 220 | Loss: 0.2782 | Correct: 50 | Time: 1.86 sec
+Epoch 230 | Loss: 0.5741 | Correct: 50 | Time: 1.88 sec
+Epoch 240 | Loss: 0.5726 | Correct: 50 | Time: 2.47 sec
+Epoch 250 | Loss: 0.1023 | Correct: 50 | Time: 1.87 sec
+Epoch 260 | Loss: 0.3876 | Correct: 50 | Time: 1.86 sec
+Epoch 270 | Loss: 0.7687 | Correct: 50 | Time: 2.59 sec
+Epoch 280 | Loss: 0.4280 | Correct: 50 | Time: 1.92 sec
+Epoch 290 | Loss: 0.1552 | Correct: 50 | Time: 1.90 sec
+Epoch 300 | Loss: 0.2462 | Correct: 50 | Time: 1.99 sec
+Epoch 310 | Loss: 0.1752 | Correct: 50 | Time: 1.86 sec
+Epoch 320 | Loss: 0.2140 | Correct: 50 | Time: 1.86 sec
+Epoch 330 | Loss: 0.1159 | Correct: 50 | Time: 1.91 sec
+Epoch 340 | Loss: 0.1478 | Correct: 50 | Time: 1.90 sec
+Epoch 350 | Loss: 1.0955 | Correct: 50 | Time: 1.86 sec
+Epoch 360 | Loss: 0.5243 | Correct: 50 | Time: 1.89 sec
+Epoch 370 | Loss: 0.4266 | Correct: 50 | Time: 2.29 sec
+Epoch 380 | Loss: 0.4118 | Correct: 50 | Time: 1.86 sec
+Epoch 390 | Loss: 0.2003 | Correct: 50 | Time: 1.87 sec
+Epoch 400 | Loss: 0.2119 | Correct: 50 | Time: 2.35 sec
+Epoch 410 | Loss: 0.2899 | Correct: 50 | Time: 1.92 sec
+Epoch 420 | Loss: 0.1739 | Correct: 50 | Time: 1.86 sec
+Epoch 430 | Loss: 0.2190 | Correct: 50 | Time: 2.58 sec
+Epoch 440 | Loss: 0.0710 | Correct: 50 | Time: 1.86 sec
+Epoch 450 | Loss: 0.3014 | Correct: 50 | Time: 1.88 sec
+Epoch 460 | Loss: 0.4941 | Correct: 50 | Time: 2.49 sec
+Epoch 470 | Loss: 0.2925 | Correct: 50 | Time: 1.89 sec
+Epoch 480 | Loss: 0.0948 | Correct: 50 | Time: 1.89 sec
+Epoch 490 | Loss: 0.4950 | Correct: 50 | Time: 2.04 sec
+Average epoch time: 1.2009s
+```
 
 # 3. XOR Dataset
 
@@ -416,6 +519,7 @@ None
 
 
 # Large Model - Simple Dataset with 500 Hidden Layers
+# CPU
 ```console
 Epoch 0 | Loss: 5.4545 | Correct: 27 | Time: 4.73 sec
 Epoch 10 | Loss: 3.1678 | Correct: 41 | Time: 3.03 sec
