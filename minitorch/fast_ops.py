@@ -56,14 +56,14 @@ class FastOps(TensorOps):
     """Optimized tensor operations for high-performance computation.
 
     This class provides static methods for common tensor operations, such as
-    element-wise mapping, zipping, reduction, and matrix multiplication. 
+    element-wise mapping, zipping, reduction, and matrix multiplication.
     Methods leverage Just-In-Time (JIT) compilation using Numba for improved performance.
 
     Methods
     -------
     map(fn: Callable[[float], float]) -> MapProto
         Applies a function element-wise to a tensor.
-    
+
     zip(fn: Callable[[float, float], float]) -> Callable[[Tensor, Tensor], Tensor]
         Combines two tensors element-wise using a binary function.
 
