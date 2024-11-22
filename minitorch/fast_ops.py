@@ -29,6 +29,21 @@ Fn = TypeVar("Fn")
 
 
 def njit(fn: Fn, **kwargs: Any) -> Fn:
+    """Applies the `numba.njit` decorator to a function with additional keyword arguments.
+
+    Args:
+    ----
+    fn : Fn
+        The function to be decorated with `numba.njit`.
+    **kwargs : Any
+        Additional keyword arguments to pass to the `numba.njit` decorator.
+
+    Returns:
+    -------
+    Fn
+        The decorated function with `numba.njit` applied.
+
+    """
     return _njit(inline="always", **kwargs)(fn)  # type: ignore
 
 
@@ -38,6 +53,28 @@ broadcast_index = njit(broadcast_index)
 
 
 class FastOps(TensorOps):
+    """Optimized tensor operations for high-performance computation.
+
+    This class provides static methods for common tensor operations, such as
+    element-wise mapping, zipping, reduction, and matrix multiplication. 
+    Methods leverage Just-In-Time (JIT) compilation using Numba for improved performance.
+
+    Methods
+    -------
+    map(fn: Callable[[float], float]) -> MapProto
+        Applies a function element-wise to a tensor.
+    
+    zip(fn: Callable[[float, float], float]) -> Callable[[Tensor, Tensor], Tensor]
+        Combines two tensors element-wise using a binary function.
+
+    reduce(fn: Callable[[float, float], float], start: float = 0.0) -> Callable[[Tensor, int], Tensor]
+        Reduces a tensor along a specified dimension using a binary function.
+
+    matrix_multiply(a: Tensor, b: Tensor) -> Tensor
+        Performs batched matrix multiplication of two tensors.
+
+    """
+
     @staticmethod
     def map(fn: Callable[[float], float]) -> MapProto:
         """See `tensor_ops.py`"""
@@ -169,15 +206,22 @@ def tensor_map(
     ) -> None:
         # TODO: Implement for Task 3.1.
         # raise NotImplementedError("Need to implement for Task 3.1")
-        for i in prange(len(out)):
-            out_index = np.zeros(len(out_shape), dtype=np.int32)
-            to_index(i, out_shape, out_index)
-            in_index = np.zeros(len(in_shape), dtype=np.int32)
-            broadcast_index(out_index, out_shape, in_shape, in_index)
+        stride_aligned = np.array_equal(out_shape, in_shape) and np.array_equal(
+            out_strides, in_strides
+        )
 
-            out_pos = index_to_position(out_index, out_strides)
-            in_pos = index_to_position(in_index, in_strides)
-            out[out_pos] = fn(in_storage[in_pos])
+        if stride_aligned:
+            for i in prange(len(out)):
+                out[i] = fn(in_storage[i])
+        else:
+            for i in prange(len(out)):
+                in_index = np.zeros(len(in_shape), dtype=np.int32)
+                out_index = np.zeros(len(out_shape), dtype=np.int32)
+                to_index(i, out_shape, out_index)
+                broadcast_index(out_index, out_shape, in_shape, in_index)
+                in_pos = index_to_position(in_index, in_strides)
+                out_pos = index_to_position(out_index, out_strides)
+                out[out_pos] = fn(in_storage[in_pos])
 
     return njit(_map, parallel=True)
 
@@ -218,18 +262,29 @@ def tensor_zip(
     ) -> None:
         # TODO: Implement for Task 3.1.
         # raise NotImplementedError("Need to implement for Task 3.1")
-        for i in prange(len(out)):
-            out_index = np.zeros(len(out_shape), dtype=np.int32)
-            to_index(i, out_shape, out_index)
-            a_index = np.zeros(len(a_shape), dtype=np.int32)
-            b_index = np.zeros(len(b_shape), dtype=np.int32)
-            broadcast_index(out_index, out_shape, a_shape, a_index)
-            broadcast_index(out_index, out_shape, b_shape, b_index)
+        stride_aligned = (
+            np.array_equal(out_shape, a_shape)
+            and np.array_equal(out_shape, b_shape)
+            and np.array_equal(out_strides, a_strides)
+            and np.array_equal(out_strides, b_strides)
+        )
 
-            out_pos = index_to_position(out_index, out_strides)
-            a_pos = index_to_position(a_index, a_strides)
-            b_pos = index_to_position(b_index, b_strides)
-            out[out_pos] = fn(a_storage[a_pos], b_storage[b_pos])
+        if stride_aligned:
+            for i in prange(len(out)):
+                out[i] = fn(a_storage[i], b_storage[i])
+        else:
+            for i in prange(len(out)):
+                out_index = np.zeros(len(out_shape), dtype=np.int32)
+                to_index(i, out_shape, out_index)
+                a_index = np.zeros(len(a_shape), dtype=np.int32)
+                b_index = np.zeros(len(b_shape), dtype=np.int32)
+                broadcast_index(out_index, out_shape, a_shape, a_index)
+                broadcast_index(out_index, out_shape, b_shape, b_index)
+
+                out_pos = index_to_position(out_index, out_strides)
+                a_pos = index_to_position(a_index, a_strides)
+                b_pos = index_to_position(b_index, b_strides)
+                out[out_pos] = fn(a_storage[a_pos], b_storage[b_pos])
 
     return njit(_zip, parallel=True)
 
@@ -267,17 +322,17 @@ def tensor_reduce(
         # TODO: Implement for Task 3.1.
         # raise NotImplementedError("Need to implement for Task 3.1")
 
-        reduce_size = a_shape[reduce_dim]
+        r_size = a_shape[reduce_dim]
         for i in prange(len(out)):
             out_index = np.zeros(len(out_shape), dtype=np.int32)
             to_index(i, out_shape, out_index)
-            o = index_to_position(out_index, out_strides)
-            acc = out[o]  # Use accumulator variable
-            for s in range(reduce_size):
-                out_index[reduce_dim] = s
+            pos = index_to_position(out_index, out_strides)
+            accum = out[pos]  # Use accumulator variable
+            for v in range(r_size):
+                out_index[reduce_dim] = v
                 j = index_to_position(out_index, a_strides)
-                acc = fn(acc, a_storage[j])
-            out[o] = acc
+                accum = fn(accum, a_storage[j])
+            out[pos] = accum
 
     return njit(_reduce, parallel=True)
 
