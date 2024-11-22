@@ -573,6 +573,7 @@ Average epoch time: 1.2126s
 
 
 # Large Model - Simple Dataset with 500 Hidden Layers
+# CPU
 ```console
 Epoch 0 | Loss: 5.4545 | Correct: 27 | Time: 4.73 sec
 Epoch 10 | Loss: 3.1678 | Correct: 41 | Time: 3.03 sec
@@ -626,6 +627,60 @@ Epoch 480 | Loss: 2.4229 | Correct: 38 | Time: 2.02 sec
 Epoch 490 | Loss: 1.0668 | Correct: 36 | Time: 2.11 sec
 Average epoch time: 1.2798s
 ```
+# GPU
+```console
+Epoch 0 | Loss: 2.6840 | Correct: 33 | Time: 4.58 sec
+Epoch 10 | Loss: 1.9793 | Correct: 47 | Time: 2.70 sec
+Epoch 20 | Loss: 0.3455 | Correct: 50 | Time: 2.74 sec
+Epoch 30 | Loss: 0.4680 | Correct: 50 | Time: 3.47 sec
+Epoch 40 | Loss: 0.1700 | Correct: 50 | Time: 2.76 sec
+Epoch 50 | Loss: 0.2229 | Correct: 50 | Time: 2.69 sec
+Epoch 60 | Loss: 0.4086 | Correct: 50 | Time: 2.88 sec
+Epoch 70 | Loss: 0.3640 | Correct: 50 | Time: 2.73 sec
+Epoch 80 | Loss: 0.0816 | Correct: 50 | Time: 3.18 sec
+Epoch 90 | Loss: 0.2159 | Correct: 50 | Time: 2.70 sec
+Epoch 100 | Loss: 0.0731 | Correct: 50 | Time: 2.68 sec
+Epoch 110 | Loss: 0.2342 | Correct: 50 | Time: 3.10 sec
+Epoch 120 | Loss: 0.2906 | Correct: 50 | Time: 2.69 sec
+Epoch 130 | Loss: 0.0519 | Correct: 50 | Time: 3.11 sec
+Epoch 140 | Loss: 0.0733 | Correct: 50 | Time: 2.70 sec
+Epoch 150 | Loss: 0.0307 | Correct: 50 | Time: 2.68 sec
+Epoch 160 | Loss: 0.0985 | Correct: 50 | Time: 3.45 sec
+Epoch 170 | Loss: 0.0121 | Correct: 50 | Time: 2.70 sec
+Epoch 180 | Loss: 0.2612 | Correct: 50 | Time: 3.22 sec
+Epoch 190 | Loss: 0.0080 | Correct: 50 | Time: 2.73 sec
+Epoch 200 | Loss: 0.2294 | Correct: 50 | Time: 2.77 sec
+Epoch 210 | Loss: 0.0342 | Correct: 50 | Time: 3.43 sec
+Epoch 220 | Loss: 0.0717 | Correct: 50 | Time: 2.72 sec
+Epoch 230 | Loss: 0.0111 | Correct: 50 | Time: 2.82 sec
+Epoch 240 | Loss: 0.2541 | Correct: 50 | Time: 2.73 sec
+Epoch 250 | Loss: 0.1933 | Correct: 50 | Time: 2.66 sec
+Epoch 260 | Loss: 0.0134 | Correct: 50 | Time: 3.37 sec
+Epoch 270 | Loss: 0.0055 | Correct: 50 | Time: 2.64 sec
+Epoch 280 | Loss: 0.2445 | Correct: 50 | Time: 3.14 sec
+Epoch 290 | Loss: 0.1146 | Correct: 50 | Time: 2.74 sec
+Epoch 300 | Loss: 0.1260 | Correct: 50 | Time: 2.67 sec
+Epoch 310 | Loss: 0.0024 | Correct: 50 | Time: 3.10 sec
+Epoch 320 | Loss: 0.0396 | Correct: 50 | Time: 2.71 sec
+Epoch 330 | Loss: 0.0285 | Correct: 50 | Time: 3.27 sec
+Epoch 340 | Loss: 0.1578 | Correct: 50 | Time: 2.71 sec
+Epoch 350 | Loss: 0.1176 | Correct: 50 | Time: 2.68 sec
+Epoch 360 | Loss: 0.1007 | Correct: 50 | Time: 2.67 sec
+Epoch 370 | Loss: 0.1352 | Correct: 50 | Time: 2.74 sec
+Epoch 380 | Loss: 0.1283 | Correct: 50 | Time: 3.38 sec
+Epoch 390 | Loss: 0.0232 | Correct: 50 | Time: 2.68 sec
+Epoch 400 | Loss: 0.0005 | Correct: 50 | Time: 2.87 sec
+Epoch 410 | Loss: 0.0152 | Correct: 50 | Time: 2.72 sec
+Epoch 420 | Loss: 0.1744 | Correct: 50 | Time: 2.66 sec
+Epoch 430 | Loss: 0.0188 | Correct: 50 | Time: 3.41 sec
+Epoch 440 | Loss: 0.0205 | Correct: 50 | Time: 2.70 sec
+Epoch 450 | Loss: 0.0176 | Correct: 50 | Time: 3.22 sec
+Epoch 460 | Loss: 0.0273 | Correct: 50 | Time: 2.75 sec
+Epoch 470 | Loss: 0.0854 | Correct: 50 | Time: 2.71 sec
+Epoch 480 | Loss: 0.0001 | Correct: 50 | Time: 2.80 sec
+Epoch 490 | Loss: 0.0277 | Correct: 50 | Time: 2.66 sec
+Average epoch time: 1.7177s
+````
 
 # Matrix Multiplication Timing:
 ``` console
